@@ -57,7 +57,6 @@ public class HelloController {
     protected void getCredentials() throws IOException {
         if (loginField.getText().equals(globalUser.getLogin()) &&
                 passwordField.getText().equals(globalUser.getPassword())) {
-
             Thread csvParserThread = getThread();
             csvParserThread.start();
 
@@ -65,7 +64,6 @@ public class HelloController {
             controllerService.switchController(
                     "add-item", applicationContext
             );
-
         } else {
             logLabel.setText("Wrong credentials");
         }
@@ -76,7 +74,6 @@ public class HelloController {
             @Override
             protected Void call() {
                 csvParserService.parseFile("csv-1");
-
                 return null;
             }
         };
