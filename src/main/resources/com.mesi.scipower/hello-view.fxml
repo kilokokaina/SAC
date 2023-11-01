@@ -6,8 +6,10 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.VBox?>
 
+<?import javafx.scene.control.Label?>
 <VBox alignment="CENTER" prefHeight="240.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mesi.scipower.controller.HelloController">
    <children>
+      <Label fx:id="logLabel"/>
       <TextField fx:id="loginField" prefWidth="235.0" promptText="Login:">
          <VBox.margin>
             <Insets bottom="5.0" left="15.0" right="15.0" />

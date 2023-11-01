@@ -1,5 +1,6 @@
 package com.mesi.scipower.controller;
 
+import com.mesi.scipower.pojo.User;
 import com.mesi.scipower.service.impl.ItemServiceImpl;
 import com.mesi.scipower.service.impl.SwitchControllerServiceImpl;
 import com.mesi.scipower.model.ItemModel;
@@ -49,11 +50,14 @@ public class ItemController {
                 itemService.findAll().stream().map(ItemModel::getItemName).toList());
         itemList.setItems(items);
 
+        User globalUser = (User) applicationContext.getBean("sessionUser");
+        log.info(globalUser.toString());
+
         log.info("add-item is initialized");
     }
 
     @FXML
-    protected void setItem() {
+    protected void addItem() {
         String itemName = this.itemName.getText();
         List<String> items = new java.util.ArrayList<>(itemList.getItems().stream().toList());
         items.add(itemName);
@@ -75,7 +79,7 @@ public class ItemController {
 
         itemService.delete(itemModel);
 
-//        itemName.getScene().getWindow().hide();
+        itemName.getScene().getWindow().hide();
         controllerService.switchController(
                 "hello-view", applicationContext
         );

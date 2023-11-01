@@ -67,6 +67,10 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <jvmArguments>
+                        --module-path /Users/nikol/Downloads/javafx-sdk-21.0.1/lib
+                        --add-modules=javafx.controls,javafx.fxml
+                    </jvmArguments>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>
