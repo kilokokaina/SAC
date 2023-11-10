@@ -17,11 +17,11 @@ public class SciPowerApplication {
         Application.launch(SciPowerGUI.class, args);
     }
 
-    @Bean
+    @Bean(name = "sessionUser")
     @Scope("singleton")
-    public User sessionUser() {
+    public User user() {
         User sessionUser = new User("KidJesus", "Rand0m-password");
-        log.info("Session user created: " + sessionUser);
+        log.info("Session user was created: " + sessionUser);
 
         return sessionUser;
     }

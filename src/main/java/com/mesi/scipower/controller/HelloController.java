@@ -4,6 +4,8 @@ import com.mesi.scipower.pojo.User;
 import com.mesi.scipower.service.impl.CSVParserService;
 import com.mesi.scipower.service.impl.SwitchControllerServiceImpl;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
@@ -25,6 +27,11 @@ public class HelloController {
     private final CSVParserService csvParserService;
     private final User globalUser;
 
+    @FunctionalInterface
+    private interface BackgroundTask {
+        void process();
+    }
+
     @Autowired
     public HelloController(SwitchControllerServiceImpl controllerService,
                            ApplicationContext applicationContext,
@@ -33,7 +40,7 @@ public class HelloController {
         this.applicationContext = applicationContext;
         this.csvParserService = csvParserService;
 
-        globalUser = (User) applicationContext.getBean("sessionUser");
+        this.globalUser = (User) applicationContext.getBean("sessionUser");
 
         log.info("Application Context ID: " + this.applicationContext.getId());
         log.info("hello-view is loaded");
@@ -49,7 +56,7 @@ public class HelloController {
     private PasswordField passwordField;
 
     @FXML
-    protected  void initialize() {
+    protected void initialize() {
         log.info("hello-view is initialized");
     }
 
@@ -57,7 +64,16 @@ public class HelloController {
     protected void getCredentials() throws IOException {
         if (loginField.getText().equals(globalUser.getLogin()) &&
                 passwordField.getText().equals(globalUser.getPassword())) {
-            Thread csvParserThread = getThread();
+            Thread csvParserThread = getThread(
+                    () -> csvParserService.parseFile("csv-1"),
+                    startEvent -> {},
+                    endEvent -> {
+                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                        alert.setTitle("Parsing");
+                        alert.setContentText("Parsing process completed");
+                        alert.showAndWait();
+                    }
+            );
             csvParserThread.start();
 
             loginField.getScene().getWindow().hide();
@@ -65,29 +81,37 @@ public class HelloController {
                     "add-item", applicationContext
             );
         } else {
-            logLabel.setText("Wrong credentials");
+            Thread wrondCredentialsThread = getThread(
+                    () -> {
+                        try {
+                            Thread.sleep(5_000);
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }, startEvent -> logLabel.setText("Wrong credentials"),
+                    endEvent -> logLabel.setText("")
+            );
+            wrondCredentialsThread.start();
         }
     }
 
-    private Thread getThread() {
-        Task<Void> backgroundParse = new Task<>() {
+    private Thread getThread(BackgroundTask backgroundTask,
+                             EventHandler<WorkerStateEvent> startEvent,
+                             EventHandler<WorkerStateEvent> endEvent) {
+        Task<Void> background = new Task<>() {
             @Override
-            protected Void call() {
-                csvParserService.parseFile("csv-1");
+            protected Void call() throws Exception {
+                backgroundTask.process();
                 return null;
             }
         };
+        background.setOnRunning(startEvent);
+        background.setOnSucceeded(endEvent);
 
-        backgroundParse.setOnSucceeded(event -> {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setContentText("Parsing process completed");
-            alert.show();
-        });
+        Thread tread = new Thread(background);
+        tread.setDaemon(true);
 
-        Thread csvParserThread = new Thread(backgroundParse);
-
-        csvParserThread.setDaemon(true);
-        return csvParserThread;
+        return tread;
     }
 
 }

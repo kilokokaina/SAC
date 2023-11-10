@@ -10,7 +10,16 @@
 
 <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="240.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mesi.scipower.controller.ItemController">
    <children>
-      <Label text="Insert new item" />
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="169.0">
+         <children>
+            <Button mnemonicParsing="false" onAction="#previousPage" text="&lt;&lt;">
+               <HBox.margin>
+                  <Insets right="5.0" />
+               </HBox.margin>
+            </Button>
+            <Label text="Insert new item" />
+         </children>
+      </HBox>
       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
          <children>
             <TextField fx:id="itemName" promptText="Item's name:">

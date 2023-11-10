@@ -78,7 +78,10 @@ public class ItemController {
         itemList.setItems(FXCollections.observableList(items));
 
         itemService.delete(itemModel);
+    }
 
+    @FXML
+    protected void previousPage() throws IOException {
         itemName.getScene().getWindow().hide();
         controllerService.switchController(
                 "hello-view", applicationContext
