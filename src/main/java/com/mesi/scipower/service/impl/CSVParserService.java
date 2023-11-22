@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
@@ -14,11 +15,15 @@ import java.util.Map;
 
 @Slf4j
 @Service
+@Qualifier("CSV")
 public class CSVParserService implements ParserService {
 
+    private static final String FILE_DIR = "src/main/resources/test_files/%s.csv";
+
     @Override
-    public void parseFile(String format) {
-        String infoString = String.format("CSVParser process %s file...", format);
+    public void parseFile(String fileName) {
+        String infoString = String.format("CSVParser process %s file...", fileName);
+        log.info(infoString);
 
         String[] headerArray = {
                 "Authors","Author full names","Author(s) ID","Title","Year",
@@ -36,7 +41,7 @@ public class CSVParserService implements ParserService {
                 .create(CSVFormat.RFC4180).setHeader(headerArray).build();
 
         try(CSVParser parser = new CSVParser(
-                new FileReader("src/main/resources/test_files/ar2001.csv"),
+                new FileReader(String.format(FILE_DIR, fileName)),
                 csvFormat)) {
 
             List<CSVRecord> csvData = parser.getRecords();
@@ -54,7 +59,7 @@ public class CSVParserService implements ParserService {
             log.error(ex.getMessage());
         }
 
-        log.info("Process completed");
+        log.info("Process completed: " + fileName);
     }
 
 }

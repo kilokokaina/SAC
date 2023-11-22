@@ -1,6 +1,5 @@
 package com.mesi.scipower.controller;
 
-import com.mesi.scipower.pojo.User;
 import com.mesi.scipower.service.impl.ItemServiceImpl;
 import com.mesi.scipower.service.impl.SwitchControllerServiceImpl;
 import com.mesi.scipower.model.ItemModel;
@@ -50,9 +49,6 @@ public class ItemController {
                 itemService.findAll().stream().map(ItemModel::getItemName).toList());
         itemList.setItems(items);
 
-        User globalUser = (User) applicationContext.getBean("sessionUser");
-        log.info(globalUser.toString());
-
         log.info("add-item is initialized");
     }
 
@@ -68,7 +64,7 @@ public class ItemController {
     }
 
     @FXML
-    protected void deleteItem() throws IOException {
+    protected void deleteItem() {
         MultipleSelectionModel<String> selectedItems = itemList.getSelectionModel();
         ItemModel itemModel = itemService.findByName(selectedItems.getSelectedItem());
 

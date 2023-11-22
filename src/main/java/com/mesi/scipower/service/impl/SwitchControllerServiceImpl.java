@@ -35,7 +35,6 @@ public class SwitchControllerServiceImpl implements SwitchControllerService {
 
         FXMLLoader fxmlLoader = new FXMLLoader(fxml.getURL());
         fxmlLoader.setControllerFactory(context::getBean);
-        log.info(fxmlLoader.getControllerFactory().toString());
         fxmlLoader.load();
 
         Parent root = fxmlLoader.getRoot();

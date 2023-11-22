@@ -10,6 +10,7 @@ import java.util.List;
 
 @Service
 public class ItemServiceImpl implements ItemService {
+
     private final ItemRepository itemRepository;
 
     @Autowired
@@ -46,4 +47,5 @@ public class ItemServiceImpl implements ItemService {
     public void deleteById(Long itemId) {
         itemRepository.deleteById(itemId);
     }
+
 }

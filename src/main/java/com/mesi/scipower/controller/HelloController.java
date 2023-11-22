@@ -1,8 +1,8 @@
 package com.mesi.scipower.controller;
 
 import com.mesi.scipower.pojo.User;
-import com.mesi.scipower.service.impl.CSVParserService;
-import com.mesi.scipower.service.impl.SwitchControllerServiceImpl;
+import com.mesi.scipower.service.ParserService;
+import com.mesi.scipower.service.SwitchControllerService;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
@@ -13,6 +13,7 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
@@ -22,10 +23,9 @@ import java.io.IOException;
 @Component
 public class HelloController {
 
-    private final SwitchControllerServiceImpl controllerService;
+    private final SwitchControllerService controllerService;
     private final ApplicationContext applicationContext;
-    private final CSVParserService csvParserService;
-    private final User globalUser;
+    private final ParserService parserService;
 
     @FunctionalInterface
     private interface BackgroundTask {
@@ -33,14 +33,12 @@ public class HelloController {
     }
 
     @Autowired
-    public HelloController(SwitchControllerServiceImpl controllerService,
-                           ApplicationContext applicationContext,
-                           CSVParserService csvParserService) {
+    public HelloController(@Qualifier("CSV") ParserService parserService,
+                           SwitchControllerService controllerService,
+                           ApplicationContext applicationContext) {
         this.controllerService = controllerService;
         this.applicationContext = applicationContext;
-        this.csvParserService = csvParserService;
-
-        this.globalUser = (User) applicationContext.getBean("sessionUser");
+        this.parserService = parserService;
 
         log.info("Application Context ID: " + this.applicationContext.getId());
         log.info("hello-view is loaded");
@@ -62,10 +60,12 @@ public class HelloController {
 
     @FXML
     protected void getCredentials() throws IOException {
+        User globalUser = applicationContext.getBean(User.class);
+
         if (loginField.getText().equals(globalUser.getLogin()) &&
                 passwordField.getText().equals(globalUser.getPassword())) {
             Thread csvParserThread = getThread(
-                    () -> csvParserService.parseFile("csv-1"),
+                    () -> parserService.parseFile("ar2001"),
                     startEvent -> {},
                     endEvent -> {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
