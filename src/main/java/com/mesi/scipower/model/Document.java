@@ -17,14 +17,9 @@ public class Document {
     private String title;
     private int year;
 
-    public Document(String title, int year) {
-        this.title = title;
-        this.year = year;
-    }
-
-    @OneToMany(cascade = CascadeType.MERGE,
-            orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "doc_id")
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "doc_author", joinColumns = @JoinColumn(name = "doc_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id"))
     private List<Author> authors;
 
     @OneToMany(cascade = CascadeType.MERGE,
