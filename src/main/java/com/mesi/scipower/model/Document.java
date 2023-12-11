@@ -4,12 +4,13 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity
 @NoArgsConstructor
 public class Document {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
@@ -18,17 +19,24 @@ public class Document {
     private int year;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(name = "doc_author", joinColumns = @JoinColumn(name = "doc_id"),
-            inverseJoinColumns = @JoinColumn(name = "author_id"))
-    private List<Author> authors;
+    @JoinTable(
+            name = "doc_author", joinColumns = @JoinColumn(name = "doc_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> authors;
 
-    @OneToMany(cascade = CascadeType.MERGE,
-            orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "doc_id")
-    private List<KeyWord> keyWords;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "doc_kw", joinColumns = @JoinColumn(name = "doc_id"),
+            inverseJoinColumns = @JoinColumn(name = "kw_id")
+    )
+    private Set<KeyWord> keyWords;
 
-    @OneToMany(cascade = CascadeType.MERGE,
-            orphanRemoval = true, fetch = FetchType.EAGER)
-    @JoinColumn(name = "doc_id")
-    private List<Reference> references;
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "doc_ref", joinColumns = @JoinColumn(name = "doc_id"),
+            inverseJoinColumns = @JoinColumn(name = "ref_id")
+    )
+    private Set<Reference> references;
+
 }

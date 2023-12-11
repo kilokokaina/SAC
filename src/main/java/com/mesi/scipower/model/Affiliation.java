@@ -17,8 +17,4 @@ public class Affiliation {
     private Long id;
     private String name;
 
-    public Affiliation(String name) {
-        this.name = name;
-    }
-
 }

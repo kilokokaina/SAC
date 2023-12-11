@@ -17,8 +17,4 @@ public class KeyWord {
     private Long id;
     private String name;
 
-    public KeyWord(String name) {
-        this.name = name;
-    }
-
 }

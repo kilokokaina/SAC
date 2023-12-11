@@ -14,8 +14,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @SpringBootApplication
@@ -52,24 +51,13 @@ public class SciPowerApplication {
             Document document2 = documentService.findByTitle("document-2");
             Document document3 = documentService.findByTitle("document-3");
 
-            List<Author> authors = authorService.findAll();
+            Set<Author> authors1 = document1.getAuthors();
+            Set<Author> authors2 = document2.getAuthors();
+            Set<Author> authors3 = document3.getAuthors();
 
-            List<Author> authors1 = new ArrayList<>();
-            List<Author> authors2 = new ArrayList<>();
-            List<Author> authors3 = List.of(authors.get(4));
-
-            for (int i = 0; i < authors.size(); i++) {
-                if (authors.get(i).getId() < 3) authors1.add(authors.get(i));
-                else authors2.add(authors.get(i));
-            }
-
-            document1.setAuthors(authors1);
-            document2.setAuthors(authors2);
-            document3.setAuthors(authors3);
-
-            documentService.save(document1);
-            documentService.save(document2);
-            documentService.save(document3);
+            log.info(authors1.toString());
+            log.info(authors2.toString());
+            log.info(authors3.toString());
         };
     }
 

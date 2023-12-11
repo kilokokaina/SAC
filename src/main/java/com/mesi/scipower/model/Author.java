@@ -1,11 +1,10 @@
 package com.mesi.scipower.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.util.Set;
 
 @Data
 @Entity
@@ -16,9 +15,13 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
     private String name;
+    private Long SCOPUS_ID;
 
-    public Author(String name) {
-        this.name = name;
-    }
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "author_affilation", joinColumns = @JoinColumn(name = "author_id"),
+            inverseJoinColumns = @JoinColumn(name = "aff_id")
+    )
+    private Set<Affiliation> affiliationSet;
 
 }
