@@ -1,6 +1,5 @@
 package com.mesi.scipower.controller;
 
-import com.mesi.scipower.pojo.User;
 import com.mesi.scipower.service.ParserService;
 import com.mesi.scipower.service.SwitchControllerService;
 import javafx.concurrent.Task;
@@ -53,13 +52,7 @@ public class HelloController {
     }
 
     @FXML
-    private Label logLabel;
-
-    @FXML
     private TextField loginField;
-
-    @FXML
-    private PasswordField passwordField;
 
     @FXML
     protected void initialize() {
@@ -77,47 +70,28 @@ public class HelloController {
 
         loginField.getScene().getWindow().hide();
         controllerService.switchController(
-                "add-item", applicationContext
+                "load-data", applicationContext
         );
     }
 
     @FXML
     protected void getCredentials() throws IOException {
-        User globalUser = applicationContext.getBean(User.class);
+        Thread csvParserThread = getThread(
+                () -> parserService.parseFile("ar2001"),
+                startEvent -> {},
+                endEvent -> {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Parsing");
+                    alert.setContentText("Parsing process completed");
+                    alert.showAndWait();
+                }
+        );
+        csvParserThread.start();
 
-        if (loginField.getText().equals(globalUser.getLogin()) &&
-                passwordField.getText().equals(globalUser.getPassword())) {
-            Thread csvParserThread = getThread(
-                    () -> {
-                        parserService.parseFile("ar2001");
-                    },
-                    startEvent -> {},
-                    endEvent -> {
-                        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                        alert.setTitle("Parsing");
-                        alert.setContentText("Parsing process completed");
-                        alert.showAndWait();
-                    }
-            );
-            csvParserThread.start();
-
-            loginField.getScene().getWindow().hide();
-            controllerService.switchController(
-                    "add-item", applicationContext
-            );
-        } else {
-            Thread wrondCredentialsThread = getThread(
-                    () -> {
-                        try {
-                            Thread.sleep(5_000);
-                        } catch (InterruptedException e) {
-                            throw new RuntimeException(e);
-                        }
-                    }, startEvent -> logLabel.setText("Wrong credentials"),
-                    endEvent -> logLabel.setText("")
-            );
-            wrondCredentialsThread.start();
-        }
+        loginField.getScene().getWindow().hide();
+        controllerService.switchController(
+                "load-data", applicationContext
+        );
     }
 
     private Thread getThread(BackgroundTask backgroundTask,

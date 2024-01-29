@@ -1,18 +1,20 @@
 package com.mesi.scipower;
 
 import com.mesi.scipower.model.ParseDocument;
-import com.mesi.scipower.pojo.Temp;
-import com.mesi.scipower.pojo.User;
 import javafx.application.Application;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
+@EnableAsync
 @SpringBootApplication
 public class SciPowerApplication {
 
@@ -20,14 +22,17 @@ public class SciPowerApplication {
         Application.launch(SciPowerGUI.class, args);
     }
 
-    @Bean(name = "sessionUser")
-    @Lazy
-    public User user(Temp temp) {
-        User sessionUser = new User("KidJesus", "Rand0m-password");
-        sessionUser.setTemp(temp);
-        log.info("Session user was created: " + sessionUser);
+    @Bean
+    public TaskExecutor taskExecutor() {
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
 
-        return sessionUser;
+        executor.setCorePoolSize(5);
+        executor.setMaxPoolSize(10);
+        executor.setQueueCapacity(10);
+        executor.setThreadNamePrefix("parser-");
+        executor.initialize();
+
+        return executor;
     }
 
     @Lazy

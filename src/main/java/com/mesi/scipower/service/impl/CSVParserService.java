@@ -1,6 +1,5 @@
 package com.mesi.scipower.service.impl;
 
-import com.mesi.scipower.model.Document;
 import com.mesi.scipower.model.ParseDocument;
 import com.mesi.scipower.service.ParserService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,13 +9,13 @@ import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
 import java.io.FileReader;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @Service
@@ -30,6 +29,7 @@ public class CSVParserService implements ParserService {
         this.applicationContext = applicationContext;
     }
 
+    @Async
     @Override
     public void parseFile(String fileName) {
         String infoString = String.format("CSVParser process %s file...", fileName);
