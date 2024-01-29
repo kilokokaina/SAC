@@ -5,19 +5,25 @@ import com.mesi.scipower.service.ParserService;
 import com.mesi.scipower.service.SwitchControllerService;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Slf4j
 @Component
@@ -26,6 +32,7 @@ public class HelloController {
     private final SwitchControllerService controllerService;
     private final ApplicationContext applicationContext;
     private final ParserService parserService;
+    private FileChooser fileChooser;
 
     @FunctionalInterface
     private interface BackgroundTask {
@@ -39,6 +46,8 @@ public class HelloController {
         this.controllerService = controllerService;
         this.applicationContext = applicationContext;
         this.parserService = parserService;
+
+        fileChooser = new FileChooser();
 
         log.info("Application Context ID: " + this.applicationContext.getId());
         log.info("hello-view is loaded");
@@ -59,13 +68,30 @@ public class HelloController {
     }
 
     @FXML
+    protected void chooseFiles(ActionEvent event) throws IOException {
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+//        List<File> selectedFile = fileChooser.showOpenMultipleDialog(stage);
+        File selectedFile = fileChooser.showOpenDialog(stage);
+        log.info(selectedFile.toString());
+
+        parserService.parseFile(selectedFile.getAbsolutePath());
+
+        loginField.getScene().getWindow().hide();
+        controllerService.switchController(
+                "add-item", applicationContext
+        );
+    }
+
+    @FXML
     protected void getCredentials() throws IOException {
         User globalUser = applicationContext.getBean(User.class);
 
         if (loginField.getText().equals(globalUser.getLogin()) &&
                 passwordField.getText().equals(globalUser.getPassword())) {
             Thread csvParserThread = getThread(
-                    () -> parserService.parseFile("ar2001"),
+                    () -> {
+                        parserService.parseFile("ar2001");
+                    },
                     startEvent -> {},
                     endEvent -> {
                         Alert alert = new Alert(Alert.AlertType.INFORMATION);
