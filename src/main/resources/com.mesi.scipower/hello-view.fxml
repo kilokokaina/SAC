@@ -20,6 +20,6 @@
             <Insets bottom="5.0" left="15.0" right="15.0" />
          </VBox.margin>
       </PasswordField>
-      <Button fx:id="enterButton" mnemonicParsing="false" onAction="#chooseFiles" text="Enter" />
+      <Button fx:id="enterButton" mnemonicParsing="false" onAction="#chooseFiles" text="Выбрать файлы" />
    </children>
 </VBox>

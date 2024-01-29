@@ -7,7 +7,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mesi.scipower.controller.ItemController">
+<VBox alignment="TOP_CENTER" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="640.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.mesi.scipower.controller.ItemController">
    <children>
       <HBox alignment="CENTER" prefHeight="70.0" prefWidth="358.0">
          <children>
@@ -19,9 +19,9 @@
             <Label text="Загруженные данные" />
          </children>
       </HBox>
-      <HBox prefHeight="413.0" prefWidth="640.0">
+      <HBox>
          <children>
-            <TableView fx:id="documentTable" prefHeight="404.0" prefWidth="645.0" />
+            <TableView fx:id="documentTable" />
          </children>
       </HBox>
    </children>

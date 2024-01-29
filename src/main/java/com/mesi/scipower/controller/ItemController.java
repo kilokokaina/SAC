@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.SelectionModel;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -34,20 +35,20 @@ public class ItemController {
         log.info("add-item is loaded");
     }
 
+    private ObservableList<ParseDocument> documentData = FXCollections.observableArrayList();
+
     @FXML
     private TableView<ParseDocument> documentTable;
-    private final ObservableList<ParseDocument> tableData = FXCollections.observableArrayList();
 
     @FXML
     protected void initialize() {
         var parsedDocuments = (List<ParseDocument>) applicationContext.getBean("parsedDocuments");
-        documentTable.setTableMenuButtonVisible(true);
 
-        Field[] fields = parsedDocuments.get(0).getClass().getDeclaredFields();
+        Field[] fields = ParseDocument.class.getDeclaredFields();
         for (Field field : fields) {
-            TableColumn<ParseDocument, String> tableColumn = new TableColumn<>(field.getName());
-            tableColumn.setPrefWidth(100.0);
-            documentTable.getColumns().add(tableColumn);
+            TableColumn<ParseDocument, String> column = new TableColumn<>();
+            column.setCellValueFactory(new PropertyValueFactory<>(field.getName()));
+            documentTable.getColumns().add(column);
         }
 
         documentTable.setOnMouseClicked(mouseEvent -> {
@@ -55,8 +56,8 @@ public class ItemController {
             log.info(selectionModel.getSelectedItem().toString());
         });
 
-        tableData.addAll(parsedDocuments);
-        documentTable.setItems(tableData);
+        documentData.addAll(parsedDocuments);
+        documentTable.setItems(documentData);
     }
 
     @FXML

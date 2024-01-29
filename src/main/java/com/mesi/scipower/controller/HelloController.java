@@ -23,7 +23,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 @Slf4j
 @Component
@@ -32,7 +31,7 @@ public class HelloController {
     private final SwitchControllerService controllerService;
     private final ApplicationContext applicationContext;
     private final ParserService parserService;
-    private FileChooser fileChooser;
+    private final FileChooser fileChooser;
 
     @FunctionalInterface
     private interface BackgroundTask {
