@@ -22,11 +22,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.stereotype.Component;
 
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
 
 @Slf4j
 @Component
@@ -98,8 +97,12 @@ public class DataController {
     }
 
     @FXML
-    protected void refresh() {
+    protected void refresh() throws IOException {
         getData();
+        documentTable.getScene().getWindow().hide();
+        controllerService.switchController(
+                "hello-view", applicationContext
+        );
     }
 
 }
