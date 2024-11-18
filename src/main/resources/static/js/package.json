@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@sigma/edge-curve": "^3.0.0-beta.16",
-    "sigma": "^3.0.0-beta.33"
-  }
-}
