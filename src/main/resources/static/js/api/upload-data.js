@@ -16,9 +16,9 @@ function uploadData() {
         }).then(async response => {
             let uploadStatus = document.querySelector(`#file-${i}`);
             if (response.status === 200) {
-                uploadStatus.innerHTML = `<h5 id="file-${i}"><span class="badge badge-outline-success">Обработано</span> ${files[i].name}</h5>`;
+                uploadStatus.innerHTML = `<h6 id="file-${i}"><badge class="badge text-bg-success">Обработано</badge> ${files[i].name}</h6>`;
             } else {
-                uploadStatus.innerHTML = `<h5 id="file-${i}"><span class="badge badge-outline-danger">Ошибка загрузки</span> ${files[i].name}</h5>`;
+                uploadStatus.innerHTML = `<h6 id="file-${i}"><badge class="badge text-bg-danger">Ошибка загрузки</badge> ${files[i].name}</h6>`;
             }
 
             if (++counter === files.length) {
@@ -31,7 +31,7 @@ function uploadData() {
 
     filesList.innerHTML = '';
     for (let i = 0; i < files.length; i++) {
-        filesList.innerHTML += `<h5 id="file-${i}"><span class="spinner-border text-primary me-1" role="status" aria-hidden="true"></span> ${files[i].name}</h5>`
+        filesList.innerHTML += `<h6 id="file-${i}"><span class="spinner-border text-primary me-1" role="status" aria-hidden="true"></span> ${files[i].name}</h6>`
     }
 }
 
@@ -41,7 +41,7 @@ function updateList() {
 
     filesList.innerHTML = '';
     for (let i = 0; i < files.length; i++) {
-        filesList.innerHTML += `<h5 id="file-${i}"><span class="badge badge-outline-warning">Готов к загрузке</span> ${files[i].name}</h5>`
+        filesList.innerHTML += `<h6 id="file-${i}"><badge class="badge text-bg-warning">Готов к загрузке</badge> ${files[i].name}</h6>`
     }
 }
 
