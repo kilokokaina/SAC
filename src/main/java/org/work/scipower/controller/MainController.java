@@ -1,6 +1,5 @@
 package org.work.scipower.controller;
 
-import jakarta.servlet.http.HttpSession;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -23,9 +22,8 @@ public class MainController {
 
     @GetMapping
     @SuppressWarnings("unchecked")
-    public String home(HttpSession session) {
+    public String home() {
         log.info("Rows: {}", ((List<ParseDocument>) context.getBean("dataList")).size());
-        log.info("JSESSIONID={}", session.getId());
         return "home";
     }
 

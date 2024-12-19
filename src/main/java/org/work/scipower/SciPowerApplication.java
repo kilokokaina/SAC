@@ -3,6 +3,7 @@ package org.work.scipower;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
@@ -13,6 +14,7 @@ import org.work.scipower.model.Reference;
 import org.work.scipower.model.graph.Edge;
 import org.work.scipower.model.graph.Node;
 
+import javax.swing.*;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -28,7 +30,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class SciPowerApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SciPowerApplication.class, args);
+        SpringApplicationBuilder builder = new SpringApplicationBuilder(SciPowerApplication.class);
+        builder.headless(false).run(args);
     }
 
     @Bean
@@ -53,6 +56,15 @@ public class SciPowerApplication {
     @ApplicationScope
     public Set<Reference> referenceList() {
         return ConcurrentHashMap.newKeySet();
+    }
+
+    @Bean
+    @ApplicationScope
+    public JFileChooser fileChooser() {
+        var dirChooser = new JFileChooser();
+        dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+
+        return dirChooser;
     }
 
     @Bean

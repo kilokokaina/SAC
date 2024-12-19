@@ -16,5 +16,6 @@ public class ProjectModel {
 
     private String projectName;
     private String projectDescription;
+    private String projectDirectory;
 
 }

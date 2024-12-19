@@ -6,6 +6,8 @@ import org.work.scipower.model.ProjectModel;
 import org.work.scipower.repository.ProjectRepository;
 import org.work.scipower.service.ProjectService;
 
+import java.util.List;
+
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
@@ -24,6 +26,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectModel findById(Long projectId) {
         return projectRepository.findById(projectId).orElse(null);
+    }
+
+    public List<ProjectModel> findAll() {
+        return projectRepository.findAll();
     }
 
     @Override
