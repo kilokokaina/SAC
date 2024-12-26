@@ -27,15 +27,15 @@ public class EdgeService {
 
     public boolean calculateEdges() {
         referenceList.parallelStream().forEach(reference -> {
-            var documentNode = nodeService.findByTitle(reference.getDocument().getTitle());
-            var referenceNode = nodeService.findByTitle(reference.getReference().getTitle());
+            var documentNode = nodeService.findByTitle(reference.getDocument().getDocumentValues().get("Title"));
+            var referenceNode = nodeService.findByTitle(reference.getReference().getDocumentValues().get("Title"));
 
             if (!documentNode.getLabel().equals(referenceNode.getLabel())) {
-                String[] docReferences = reference.getDocument().getReferences().split(";");
+                String[] docReferences = reference.getDocument().getDocumentValues().get("References").split(";");
 
                 int referenceWeight = 1;
                 for (String docReference : docReferences) {
-                    if (reference.getReference().getReferences().contains(docReference)) {
+                    if (reference.getReference().getDocumentValues().get("References").contains(docReference)) {
                         referenceWeight++;
                     }
                 }

@@ -6,35 +6,27 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.work.scipower.model.ProjectModel;
 import org.work.scipower.service.impl.ProjectServiceImpl;
 
 @Slf4j
 @Controller
-public class MainController {
+public class SettingsController {
 
     private final ProjectServiceImpl projectService;
     private final ApplicationContext context;
 
     @Autowired
-    public MainController(ProjectServiceImpl projectService, ApplicationContext context) {
-        this.projectService= projectService;
+    public SettingsController(ApplicationContext context, ProjectServiceImpl projectService) {
+        this.projectService = projectService;
         this.context = context;
     }
 
-    @GetMapping
-    public String home(Model model) {
+    @GetMapping("settings")
+    public String settings(Model model) {
         model.addAttribute("projects", projectService.findAll());
         log.info("Project: {}", context.getBean("currentProject"));
 
-        return "home";
-    }
-
-    @GetMapping("{project_id}")
-    public String chooseProject(@PathVariable(value = "project_id") ProjectModel project) {
-        projectService.chooseProject(project);
-        return "redirect:/";
+        return "settings";
     }
 
 }

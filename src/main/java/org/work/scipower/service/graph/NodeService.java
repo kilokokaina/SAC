@@ -56,8 +56,8 @@ public class NodeService {
         long startTime = System.currentTimeMillis();
 
         referenceList.parallelStream().forEach(reference -> {
-            var document = new Node(reference.getDocument().getTitle());
-            var referenceDocument = new Node(reference.getReference().getTitle());
+            var document = new Node(reference.getDocument().getDocumentValues().get("Title"));
+            var referenceDocument = new Node(reference.getReference().getDocumentValues().get("Title"));
 
             nodeList.add(document);
             nodeList.add(referenceDocument);
@@ -77,7 +77,7 @@ public class NodeService {
         nodeList.parallelStream().forEach(node -> {
             int nodeWeight = 1;
             for (var rereference : referenceList) {
-                if (rereference.getReference().getTitle().equals(node.getLabel())) nodeWeight++;
+                if (rereference.getReference().getDocumentValues().get("Title").equals(node.getLabel())) nodeWeight++;
             }
             node.setWeight(nodeWeight);
 

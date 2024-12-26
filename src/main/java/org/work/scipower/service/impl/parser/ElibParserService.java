@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.work.scipower.model.ParseDocument;
+import org.work.scipower.model.ParserDocument;
 import org.work.scipower.service.ParserService;
 
 import java.io.BufferedWriter;
@@ -65,7 +65,7 @@ public class ElibParserService implements ParserService {
     }
 
     @Override
-    public CompletableFuture<List<ParseDocument>> parseFile(MultipartFile file) {
+    public CompletableFuture<List<ParserDocument>> parseFile(MultipartFile file) {
         return null;
     }
 }

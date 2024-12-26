@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.work.scipower.dto.DataTableDTO;
 import org.work.scipower.model.ParseDocument;
+import org.work.scipower.model.ParserDocument;
 import org.work.scipower.model.Reference;
 import org.work.scipower.service.DataService;
 import org.work.scipower.service.ParserService;
@@ -26,7 +27,7 @@ import java.util.concurrent.ExecutionException;
 @RequestMapping("api/data")
 public class DataAPI {
 
-    private final List<ParseDocument> dataList;
+    private final List<ParserDocument> dataList;
     private final Set<Reference> referenceList;
 
     private final ParserService csvParserService;
@@ -38,7 +39,7 @@ public class DataAPI {
     @SuppressWarnings("unchecked")
     public DataAPI(ApplicationContext context, @Qualifier("CSV") ParserService csvParserService,
                    @Qualifier("RIS") ParserService risParserService, DataService dataService) {
-        this.dataList = (CopyOnWriteArrayList<ParseDocument>) context.getBean("dataList");
+        this.dataList = (CopyOnWriteArrayList<ParserDocument>) context.getBean("dataList2");
         this.referenceList = (Set<Reference>) context.getBean("referenceList");
 
         this.csvParserService = csvParserService;
@@ -47,12 +48,12 @@ public class DataAPI {
         this.dataService = dataService;
     }
 
-    private static List<ParseDocument> getDTList(List<ParseDocument> dataList, int start, int length) {
+    private static List<ParserDocument> getDTList(List<ParserDocument> dataList, int start, int length) {
         return dataList.subList(start, Math.min((start + length), dataList.size()));
     }
 
     @GetMapping("get")
-    public @ResponseBody ResponseEntity<List<ParseDocument>> getUploadedData() {
+    public @ResponseBody ResponseEntity<List<ParserDocument>> getUploadedData() {
         return ResponseEntity.ok(dataList);
     }
 
@@ -77,7 +78,7 @@ public class DataAPI {
 
     @GetMapping("get/datatable")
     public @ResponseBody ResponseEntity<DataTableDTO> test(@RequestParam Map<String, String> params) {
-        List<ParseDocument> resultList;
+        List<ParserDocument> resultList;
         var resultDto = new DataTableDTO();
 
         int draw = Integer.parseInt(params.get("draw"));
@@ -86,8 +87,7 @@ public class DataAPI {
         String search = params.get("search[value]");
 
         if (!search.isEmpty()) {
-            var filteredList = dataList.parallelStream().filter(
-                    doc -> doc.toString().substring(14, doc.toString().length() - 1).contains(search)).toList();
+            var filteredList = dataList.parallelStream().filter(doc -> doc.toString().contains(search)).toList();
             resultList = getDTList(filteredList, start, length);
             resultDto.setRecordsFiltered(filteredList.size());
         } else {
@@ -95,7 +95,7 @@ public class DataAPI {
             resultDto.setRecordsFiltered(dataList.size());
         }
 
-        resultDto.setData(resultList.toArray(new ParseDocument[0]));
+        resultDto.setData(resultList.toArray(new ParserDocument[0]));
         resultDto.setRecordsTotal(dataList.size());
         resultDto.setDraw(draw);
 

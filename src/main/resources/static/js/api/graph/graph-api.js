@@ -36,5 +36,5 @@ async function drawGraph() {
     await getEdges()
 
     const sigmaInstance = new Sigma(graph, document.getElementById("container"));
-    sigmaInstance.settings.labelColor = { color: 'white' };
+    // sigmaInstance.settings.labelColor = { color: 'white' };
 }

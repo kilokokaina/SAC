@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.work.scipower.model.ParseDocument;
+import org.work.scipower.model.ParserDocument;
 import org.work.scipower.model.Reference;
 
 import java.util.List;
@@ -18,20 +18,20 @@ import java.util.stream.Collectors;
 @Service
 public class DataService {
 
-    private final List<ParseDocument> dataList;
+    private final List<ParserDocument> dataList;
     private final Set<Reference> referenceList;
 
     @Autowired
     @SuppressWarnings("unchecked")
     public DataService(ApplicationContext context) {
-        this.dataList = (CopyOnWriteArrayList<ParseDocument>) context.getBean("dataList");
+        this.dataList = (CopyOnWriteArrayList<ParserDocument>) context.getBean("dataList2");
         this.referenceList = (Set<Reference>) context.getBean("referenceList");
     }
 
-    private ParseDocument findByTitle(String title) {
-        ParseDocument result = null;
+    private ParserDocument findByTitle(String title) {
+        ParserDocument result = null;
         for (var document : dataList) {
-            if (document.getTitle().equals(title)) {
+            if (document.getDocumentValues().get("Title").equals(title)) {
                 result = document;
             }
         }
@@ -40,12 +40,12 @@ public class DataService {
     }
 
     public boolean findReferences() {
-        var documentTitles = dataList.stream().map(ParseDocument::getTitle)
+        var documentTitles = dataList.stream().map(document -> document.getDocumentValues().get("Title"))
                 .collect(Collectors.toCollection(CopyOnWriteArrayList::new));
         long startTime = System.currentTimeMillis();
 
         dataList.parallelStream().forEach(document -> {
-            for (String reference : document.getReferences().split("; ")) {
+            for (String reference : document.getDocumentValues().get("References").split("; ")) {
                 var pageMatcher = Pattern.compile(", pp. \\d+-\\d+").matcher(reference);
                 reference = pageMatcher.replaceAll("");
 
@@ -78,7 +78,7 @@ public class DataService {
     }
 
     public Set<String> getKeyWordList() {
-        var documentKeyWords = dataList.stream().map(ParseDocument::getAuthorKeywords)
+        var documentKeyWords = dataList.stream().map(document -> document.getDocumentValues().get("Author Keywords"))
                 .collect(Collectors.toCollection(CopyOnWriteArrayList::new));
         var keyWordsSet = new CopyOnWriteArraySet<String>();
 

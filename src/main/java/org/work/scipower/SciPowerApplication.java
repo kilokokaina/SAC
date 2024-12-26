@@ -1,7 +1,6 @@
 package org.work.scipower;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +9,8 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.context.annotation.ApplicationScope;
 import org.work.scipower.model.ParseDocument;
+import org.work.scipower.model.ParserDocument;
+import org.work.scipower.model.ProjectModel;
 import org.work.scipower.model.Reference;
 import org.work.scipower.model.graph.Edge;
 import org.work.scipower.model.graph.Node;
@@ -42,6 +43,12 @@ public class SciPowerApplication {
 
     @Bean
     @ApplicationScope
+    public CopyOnWriteArrayList<ParserDocument> dataList2() {
+        return new CopyOnWriteArrayList<>();
+    }
+
+    @Bean
+    @ApplicationScope
     public Set<Edge> edgeList() {
         return ConcurrentHashMap.newKeySet();
     }
@@ -60,9 +67,17 @@ public class SciPowerApplication {
 
     @Bean
     @ApplicationScope
+    public ProjectModel currentProject() {
+        return new ProjectModel();
+    }
+
+    @Bean
+    @ApplicationScope
     public JFileChooser fileChooser() {
         var dirChooser = new JFileChooser();
+
         dirChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+        dirChooser.setDialogType(JFileChooser.SAVE_DIALOG);
 
         return dirChooser;
     }

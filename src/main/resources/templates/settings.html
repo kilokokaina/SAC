@@ -7,14 +7,11 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="description" content="">
-        <title>SciPower - Загрузка публикаций</title>
+        <title>SciPower - Главная</title>
 
         <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/dashboard/">
 
         <link th:href="@{/assets/dist/css/bootstrap.min.css}" rel="stylesheet">
-
-        <link th:href="@{/vendor/datatables.net-bs5/css/dataTables.bootstrap5.min.css}" rel="stylesheet" type="text/css"/>
-        <link th:href="@{/vendor/datatables.net-responsive-bs5/css/responsive.bootstrap5.min.css}" rel="stylesheet" type="text/css"/>
 
         <style>
             .bi {
@@ -146,31 +143,6 @@
         </header>
 
         <div class="container-fluid">
-            <!-- Standard modal -->
-            <div id="upload-files-modal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="standard-modalLabel" aria-hidden="true">
-                <div class="modal-dialog modal-dialog-scrollable" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title" id="standard-modalLabel">Загрузка списка публикаций</h4>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-hidden="true"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="col-sm-6 mb-3">
-                                <label for="papers-list" class="form-label">Выберите файлы</label>
-                                <input class="form-control" type="file" accept=".csv, .ris" id="papers-list" oninput="updateList()" multiple>
-                            </div>
-                            <div id="files-list">
-
-                            </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-light" data-bs-dismiss="modal">Закрыть</button>
-                            <button type="button" id="upload-button" class="btn btn-primary" onclick="uploadData()" >Загрузить</button>
-                        </div>
-                    </div><!-- /.modal-content -->
-                </div><!-- /.modal-dialog -->
-            </div><!-- /.modal -->
-
             <!-- Modal -->
             <div class="modal fade" id="projectModal" tabindex="-1" aria-labelledby="projectModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered">
@@ -240,7 +212,7 @@
                                     </div>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" th:href="@{/data}">
+                                    <a class="nav-link d-flex align-items-center gap-2" aria-current="page" th:href="@{/data}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-files" viewBox="0 0 16 16">
                                             <path d="M13 0H6a2 2 0 0 0-2 2 2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h7a2 2 0 0 0 2-2 2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m0 13V4a2 2 0 0 0-2-2H5a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1M3 4a1 1 0 0 1 1-1h7a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/>
                                         </svg>
@@ -248,7 +220,7 @@
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a class="nav-link d-flex align-items-center gap-2" aria-current="page" th:href="@{/settings}">
+                                    <a class="nav-link d-flex align-items-center gap-2 active" aria-current="page" th:href="@{/data}">
                                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
                                             <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492M5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0"/>
                                             <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115z"/>
@@ -269,47 +241,13 @@
 
                 <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
                     <div class="mt-3">
-                        <h4 class="page-title">Загрузка публикаций</h4>
+                        <h4 class="page-title">Настройки</h4>
                     </div>
-
-                    <div class="row mb-3">
-                        <div class="col">
-                            <div class="d-flex flex-wrap gap-2">
-                                <button type="button" class="btn btn-primary mb-3" data-bs-toggle="modal" data-bs-target="#upload-files-modal">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-diff-fill" viewBox="0 0 16 16">
-                                        <path d="M9.293 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2V4.707A1 1 0 0 0 13.707 4L10 .293A1 1 0 0 0 9.293 0M9.5 3.5v-2l3 3h-2a1 1 0 0 1-1-1M8 6a.5.5 0 0 1 .5.5V8H10a.5.5 0 0 1 0 1H8.5v1.5a.5.5 0 0 1-1 0V9H6a.5.5 0 0 1 0-1h1.5V6.5A.5.5 0 0 1 8 6m-2.5 6.5A.5.5 0 0 1 6 12h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"/>
-                                    </svg>
-                                    Загрузить список публикаций
-                                </button>
-                            </div>
-                            <table id="data-list" class="table">
-                                <thead>
-                                <tr>
-                                    <th th:each="field : ${thead}" th:text="${field}" />
-                                </tr>
-                                </thead>
-                            </table>
-                        </div>
-                    </div> <!-- end col-->
-                    <!-- end row -->
                 </main>
             </div>
         </div>
         <script th:src="@{/assets/dist/js/bootstrap.bundle.min.js}"></script>
-
-        <script th:src="@{/vendor/jquery/jquery.min.js}"></script>
-
-        <script th:src="@{/vendor/datatables.net/js/jquery.dataTables.min.js}"></script>
-        <script th:src="@{/vendor/datatables.net-bs5/js/dataTables.bootstrap5.min.js}"></script>
-        <script th:src="@{/vendor/datatables.net-responsive/js/dataTables.responsive.min.js}"></script>
-        <script th:src="@{/vendor/datatables.net-responsive-bs5/js/responsive.bootstrap5.min.js}"></script>
-
-        <script th:src="@{/js/api/upload-data.js}"></script>
         <script th:src="@{/js/api/project-api.js}"></script>
         <script th:src="@{/js/sidebars.js}"></script>
-
-        <script>
-            renderTable();
-        </script>
     </body>
 </html>

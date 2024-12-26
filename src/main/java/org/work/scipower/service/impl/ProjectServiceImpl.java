@@ -1,6 +1,7 @@
 package org.work.scipower.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
 import org.work.scipower.model.ProjectModel;
 import org.work.scipower.repository.ProjectRepository;
@@ -12,10 +13,12 @@ import java.util.List;
 public class ProjectServiceImpl implements ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final ApplicationContext context;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository) {
+    public ProjectServiceImpl(ProjectRepository projectRepository, ApplicationContext context) {
         this.projectRepository = projectRepository;
+        this.context = context;
     }
 
     @Override
@@ -30,6 +33,15 @@ public class ProjectServiceImpl implements ProjectService {
 
     public List<ProjectModel> findAll() {
         return projectRepository.findAll();
+    }
+
+    public void chooseProject(ProjectModel project) {
+        var currentProject = (ProjectModel) context.getBean("currentProject");
+
+        currentProject.setProjectId(project.getProjectId());
+        currentProject.setProjectName(project.getProjectName());
+        currentProject.setProjectDescription(project.getProjectDescription());
+        currentProject.setProjectDirectory(project.getProjectDirectory());
     }
 
     @Override

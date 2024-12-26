@@ -7,8 +7,8 @@ import lombok.Data;
 @AllArgsConstructor
 public class Reference {
 
-    private ParseDocument document;
-    private ParseDocument reference;
+    private ParserDocument document;
+    private ParserDocument reference;
 
 }
 

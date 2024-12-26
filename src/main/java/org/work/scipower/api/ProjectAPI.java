@@ -4,10 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.work.scipower.model.ProjectModel;
 import org.work.scipower.service.impl.ProjectServiceImpl;
 
@@ -49,6 +46,19 @@ public class ProjectAPI {
     @GetMapping
     public @ResponseBody ResponseEntity<List<ProjectModel>> getProjects() {
         return ResponseEntity.ok(projectService.findAll());
+    }
+
+    @GetMapping("{id}")
+    public @ResponseBody ResponseEntity<ProjectModel> getProjectById(@PathVariable("id") Long id) {
+        return ResponseEntity.ok(projectService.findById(id));
+    }
+
+    @PostMapping
+    public @ResponseBody ResponseEntity<ProjectModel> createProject(@RequestBody ProjectModel project) {
+        var newProject = projectService.save(project);
+        projectService.chooseProject(newProject);
+
+        return ResponseEntity.ok(newProject);
     }
 
 }
