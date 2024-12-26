@@ -33,47 +33,6 @@ public class CSVParserService implements ParserService {
         this.HEADERS = ((List<String>) context.getBean("HEADERS")).toArray(new String[0]);
     }
 
-//    @Async
-//    @Override
-//    public CompletableFuture<List<ParseDocument>> parseFile(MultipartFile file) {
-//        log.info("CSVParser process {} file...", file.getOriginalFilename());
-//
-//        var parseDocumentList = new ArrayList<ParseDocument>();
-//        var csvFormat = CSVFormat.Builder.create(CSVFormat.RFC4180).setSkipHeaderRecord(true).setHeader(HEADERS).build();
-//
-//        try(var parser = new CSVParser(new InputStreamReader(file.getInputStream()), csvFormat)) {
-//            var csvData = parser.getRecords();
-//            Field[] fields; String[] values;
-//
-//            for (CSVRecord csv: csvData) {
-//                var document = new ParseDocument();
-//
-//                fields = document.getClass().getDeclaredFields();
-//                values = csv.values();
-//
-//                if (values[3].isEmpty()) continue;
-//
-//                for (int i = 1; i < fields.length; i++) {
-//                    fields[i].setAccessible(true);
-//                    try {
-//                        fields[i].set(document, values[i - 1]);
-//                    } catch (IllegalAccessException e) {
-//                        throw new RuntimeException(e);
-//                    }
-//                }
-//
-//                parseDocumentList.add(document);
-//            }
-//
-//        } catch (IOException ex) {
-//            log.error(ex.getMessage());
-//        }
-//
-//        log.info("Process completed: {}; Rows: {}", file.getOriginalFilename(), parseDocumentList.size());
-//
-//        return CompletableFuture.completedFuture(parseDocumentList);
-//    }
-
     @Async
     @Override
     public CompletableFuture<List<ParserDocument>> parseFile(MultipartFile file) {

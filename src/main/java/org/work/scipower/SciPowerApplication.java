@@ -8,7 +8,6 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.web.context.annotation.ApplicationScope;
-import org.work.scipower.model.ParseDocument;
 import org.work.scipower.model.ParserDocument;
 import org.work.scipower.model.ProjectModel;
 import org.work.scipower.model.Reference;
@@ -37,13 +36,7 @@ public class SciPowerApplication {
 
     @Bean
     @ApplicationScope
-    public CopyOnWriteArrayList<ParseDocument> dataList() {
-        return new CopyOnWriteArrayList<>();
-    }
-
-    @Bean
-    @ApplicationScope
-    public CopyOnWriteArrayList<ParserDocument> dataList2() {
+    public CopyOnWriteArrayList<ParserDocument> dataList() {
         return new CopyOnWriteArrayList<>();
     }
 

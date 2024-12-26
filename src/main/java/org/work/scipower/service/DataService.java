@@ -24,7 +24,7 @@ public class DataService {
     @Autowired
     @SuppressWarnings("unchecked")
     public DataService(ApplicationContext context) {
-        this.dataList = (CopyOnWriteArrayList<ParserDocument>) context.getBean("dataList2");
+        this.dataList = (CopyOnWriteArrayList<ParserDocument>) context.getBean("dataList");
         this.referenceList = (Set<Reference>) context.getBean("referenceList");
     }
 

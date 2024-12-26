@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Service;
-import org.work.scipower.model.ParseDocument;
+import org.work.scipower.model.ParserDocument;
 import org.work.scipower.model.Reference;
 import org.work.scipower.model.graph.Edge;
 import org.work.scipower.model.graph.Node;
@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
 @Service
 public class NodeService {
 
-    private final List<ParseDocument> dataList;
+    private final List<ParserDocument> dataList;
     private final Set<Reference> referenceList;
     private final Set<Node> nodeList;
     private final Set<Edge> edgeList;
@@ -27,7 +27,7 @@ public class NodeService {
     @Autowired
     @SuppressWarnings("unchecked")
     public NodeService(ApplicationContext context) {
-        this.dataList = (CopyOnWriteArrayList<ParseDocument>) context.getBean("dataList");
+        this.dataList = (CopyOnWriteArrayList<ParserDocument>) context.getBean("dataList");
         this.referenceList = (Set<Reference>) context.getBean("referenceList");
         this.nodeList = (Set<Node>) context.getBean("nodeList");
         this.edgeList = (Set<Edge>) context.getBean("edgeList");

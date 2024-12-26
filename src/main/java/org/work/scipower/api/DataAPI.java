@@ -9,7 +9,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.work.scipower.dto.DataTableDTO;
-import org.work.scipower.model.ParseDocument;
 import org.work.scipower.model.ParserDocument;
 import org.work.scipower.model.Reference;
 import org.work.scipower.service.DataService;
@@ -39,7 +38,7 @@ public class DataAPI {
     @SuppressWarnings("unchecked")
     public DataAPI(ApplicationContext context, @Qualifier("CSV") ParserService csvParserService,
                    @Qualifier("RIS") ParserService risParserService, DataService dataService) {
-        this.dataList = (CopyOnWriteArrayList<ParserDocument>) context.getBean("dataList2");
+        this.dataList = (CopyOnWriteArrayList<ParserDocument>) context.getBean("dataList");
         this.referenceList = (Set<Reference>) context.getBean("referenceList");
 
         this.csvParserService = csvParserService;
